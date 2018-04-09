@@ -15,11 +15,14 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void runCommand();
+
 private:
     QTabWidget *tabs;
     QVBoxLayout *layout;
     QTextEdit *outputText;
-    QPushButton *run;
+    QPushButton *runButton;
 };
 
 #endif // MAINWINDOW_H

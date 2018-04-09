@@ -1,4 +1,5 @@
 #include "pingtab.h"
+#include <QDebug>
 
 PingTab::PingTab(QWidget *parent) :
     QWidget(parent),
@@ -79,4 +80,22 @@ PingTab::PingTab(QWidget *parent) :
     vLayout->addLayout(ipLayout);
     vLayout->addLayout(timesLayout);
     setLayout(vLayout);
+}
+
+int PingTab::getTimes()
+{
+    // Data validation is done by the widget itself
+    return timesEdit->text().toInt();
+}
+
+QVector<int>& PingTab::getIp(QVector<int>& ipOctets)
+{
+    // Data validation is done by the widget itself
+    ipOctets.push_back(ipEdit1->text().toInt());
+    ipOctets.push_back(ipEdit2->text().toInt());
+    ipOctets.push_back(ipEdit3->text().toInt());
+    ipOctets.push_back(ipEdit4->text().toInt());
+
+    for (auto e : ipOctets) qDebug() << e;
+    return ipOctets;
 }

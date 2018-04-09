@@ -7,12 +7,15 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QVector>
 
 class PingTab : public QWidget
 {
     Q_OBJECT
 public:
     explicit PingTab(QWidget *parent = nullptr);
+    int getTimes();
+    QVector<int>& getIp(QVector<int>& ipOctets);
 
 signals:
 
