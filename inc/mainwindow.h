@@ -25,14 +25,14 @@ private slots:
     void handleError(QProcess::ProcessError);
 
 private:
-    QTabWidget *tabs;
-    QVBoxLayout *layout;
-    QHBoxLayout *btnsLayout;
-    QTextEdit *outputText;
-    QPushButton *runButton;
-    QPushButton *clearButton;
-    QPushButton *terminateButton;
-    QProcess *commandRunner;
+    QTabWidget *_tabs;
+    QVBoxLayout *_layout;
+    QHBoxLayout *_btnsLayout;
+    QTextEdit *_outputText;
+    QPushButton *_runButton;
+    QPushButton *_clearButton;
+    QPushButton *_terminateButton;
+    QProcess *_commandRunner;
 };
 
 #endif // MAINWINDOW_H

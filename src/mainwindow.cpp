@@ -7,42 +7,42 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent),
-      tabs(new QTabWidget(this)),
-      layout(new QVBoxLayout(this)),
-      btnsLayout(new QHBoxLayout(this)),
-      outputText(new QTextEdit(this)),
-      runButton(new QPushButton(this)),
-      clearButton(new QPushButton(this)),
-      terminateButton(new QPushButton(this)),
-      commandRunner(new QProcess(this))
+      _tabs(new QTabWidget(this)),
+      _layout(new QVBoxLayout(this)),
+      _btnsLayout(new QHBoxLayout(this)),
+      _outputText(new QTextEdit(this)),
+      _runButton(new QPushButton(this)),
+      _clearButton(new QPushButton(this)),
+      _terminateButton(new QPushButton(this)),
+      _commandRunner(new QProcess(this))
 {
     // Add TABs with commands
-    tabs->addTab(new PingTab(tabs), "ping");
-    tabs->addTab(new TracertTab(tabs), "traceroute");
-    tabs->addTab(new OneOptionTab("'Show all' option", tabs), "arp");
-    tabs->addTab(new OneOptionTab( "'Show all' option", tabs), "ifconfig");
+    _tabs->addTab(new PingTab(_tabs), "ping");
+    _tabs->addTab(new TracertTab(_tabs), "traceroute");
+    _tabs->addTab(new OneOptionTab("'Show all' option", _tabs), "arp");
+    _tabs->addTab(new OneOptionTab( "'Show all' option", _tabs), "ifconfig");
 
     // Setup buttons and text field geometry
-    outputText->setBaseSize(150, 400);
-    runButton->setText("RUN");
-    runButton->setFixedWidth(140);
-    clearButton->setText("CLEAR");
-    clearButton->setFixedWidth(140);
-    terminateButton->setText("TERMINATE");
-    terminateButton->setFixedWidth(140);
+    _outputText->setBaseSize(150, 400);
+    _runButton->setText("RUN");
+    _runButton->setFixedWidth(140);
+    _clearButton->setText("CLEAR");
+    _clearButton->setFixedWidth(140);
+    _terminateButton->setText("TERMINATE");
+    _terminateButton->setFixedWidth(140);
 
     /* Horizontal layout for buttons*/
-    btnsLayout->addWidget(runButton);
-    btnsLayout->addWidget(terminateButton);
-    btnsLayout->addWidget(clearButton);
+    _btnsLayout->addWidget(_runButton);
+    _btnsLayout->addWidget(_terminateButton);
+    _btnsLayout->addWidget(_clearButton);
 
     /* Main vertical layout */
-    layout->addWidget(tabs);
-    layout->setAlignment(tabs, Qt::AlignTop);
-    layout->addLayout(btnsLayout);
-    layout->setAlignment(runButton, Qt::AlignHCenter);
-    layout->addWidget(outputText);
-    setLayout(layout);
+    _layout->addWidget(_tabs);
+    _layout->setAlignment(_tabs, Qt::AlignTop);
+    _layout->addLayout(_btnsLayout);
+    _layout->setAlignment(_runButton, Qt::AlignHCenter);
+    _layout->addWidget(_outputText);
+    setLayout(_layout);
 
     // Set the initial poistion and size of the main window
     this->setGeometry(300, 130, 500, 500);
@@ -50,22 +50,22 @@ MainWindow::MainWindow(QWidget *parent)
     /* Mechanics of the  application */
 
     // Execute command when the "RUN" button is clicked
-    connect(runButton, SIGNAL (clicked()), this, SLOT (runCommand()));
+    connect(_runButton, SIGNAL (clicked()), this, SLOT (runCommand()));
 
     // Terminate the process when "TERMINATE" button is clicked
-    connect(terminateButton, SIGNAL (clicked()), commandRunner, SLOT (terminate()));
+    connect(_terminateButton, SIGNAL (clicked()), _commandRunner, SLOT (terminate()));
 
     // Clear the output text field when "CLEAR" button is clicked
-    connect(clearButton, SIGNAL (clicked()), this, SLOT (clear()));
+    connect(_clearButton, SIGNAL (clicked()), this, SLOT (clear()));
 
     // Update output text filed when the command has finished
-    connect(commandRunner, SIGNAL (readyReadStandardOutput()), this, SLOT (updateOutputRealTime()));
+    connect(_commandRunner, SIGNAL (readyReadStandardOutput()), this, SLOT (updateOutputRealTime()));
 
     // Add delimiter to the output text field when the command has been executed
-    connect(commandRunner, SIGNAL (finished(int, QProcess::ExitStatus)), this, SLOT (updateOutput(int, QProcess::ExitStatus)));
+    connect(_commandRunner, SIGNAL (finished(int, QProcess::ExitStatus)), this, SLOT (updateOutput(int, QProcess::ExitStatus)));
 
     // Handle QProcess error (e.g no such command in the system)
-    connect(commandRunner, SIGNAL (errorOccurred(QProcess::ProcessError)), this, SLOT (handleError(QProcess::ProcessError)));
+    connect(_commandRunner, SIGNAL (errorOccurred(QProcess::ProcessError)), this, SLOT (handleError(QProcess::ProcessError)));
 
 }
 
@@ -78,11 +78,11 @@ void MainWindow::runCommand()
 {
 
     // Disactivate the button so it cannot be clicked once again
-    runButton->setDisabled(true);
+    _runButton->setDisabled(true);
 
     // Check which TAB is active
-    QWidget *currentTab = tabs->currentWidget();
-    int currentTabIndex = tabs->currentIndex();
+    QWidget *currentTab = _tabs->currentWidget();
+    int currentTabIndex = _tabs->currentIndex();
 
     PingTab *pingTab = nullptr;
     TracertTab *tracertTab = nullptr;
@@ -152,7 +152,7 @@ void MainWindow::runCommand()
     }
 
     // Run the command
-    commandRunner->start(program, arguments);
+    _commandRunner->start(program, arguments);
 }
 
 void MainWindow::updateOutput(int exitCode, QProcess::ExitStatus exitStatus)
@@ -161,28 +161,28 @@ void MainWindow::updateOutput(int exitCode, QProcess::ExitStatus exitStatus)
     (void)exitStatus;
 
     // Activate the button again
-    runButton->setEnabled(true);
+    _runButton->setEnabled(true);
 
     QString delimiter("\n------------------------------------------------------------------\n\n");
-    outputText->append(delimiter);
+    _outputText->append(delimiter);
 
     // Auto scroll down if the amount of text is greater than the text field
-    QScrollBar *sb = outputText->verticalScrollBar();
+    QScrollBar *sb = _outputText->verticalScrollBar();
     sb->setValue(sb->maximum());
 }
 
 void MainWindow::updateOutputRealTime()
 {
-    outputText->setText(outputText->toPlainText() + commandRunner->readAllStandardOutput());
+    _outputText->setText(_outputText->toPlainText() + _commandRunner->readAllStandardOutput());
 
     // Auto scroll down if the amount of text is greater than the text field
-    QScrollBar *sb = outputText->verticalScrollBar();
+    QScrollBar *sb = _outputText->verticalScrollBar();
     sb->setValue(sb->maximum());
 }
 
 void MainWindow::clear()
 {
-    outputText->clear();
+    _outputText->clear();
 }
 
 void MainWindow::handleError(QProcess::ProcessError error)
@@ -191,46 +191,46 @@ void MainWindow::handleError(QProcess::ProcessError error)
     switch (error) {
     case QProcess::FailedToStart:
 
-        outputText->append("ERROR. Failed to start the process\n");
-        outputText->append("\n------------------------------------------------------------------\n\n");
+        _outputText->append("ERROR. Failed to start the process\n");
+        _outputText->append("\n------------------------------------------------------------------\n\n");
 
         // Activate the button again. Need to be done here since in this case
         // handler related to "process finished" event will not be triggered.
-        runButton->setEnabled(true);
+        _runButton->setEnabled(true);
 
         break;
 
     case QProcess::Crashed:
 
-        outputText->append("ERROR. Process terminated\n");
+        _outputText->append("ERROR. Process terminated\n");
         break;
 
     case QProcess::Timedout:
 
-        outputText->append("ERROR. Timeout occured\n");
+        _outputText->append("ERROR. Timeout occured\n");
         break;
 
     case QProcess::WriteError:
 
-        outputText->append("ERROR. WriteError occured\n");
+        _outputText->append("ERROR. WriteError occured\n");
         break;
 
     case QProcess::ReadError:
 
-        outputText->append("ERROR. ReadError occured\n");
+        _outputText->append("ERROR. ReadError occured\n");
         break;
 
     case QProcess::UnknownError:
 
-        outputText->append("ERROR. UnknownError occured\n");
+        _outputText->append("ERROR. UnknownError occured\n");
         break;
     }
 
     // Activate the button again
-    runButton->setEnabled(true);
+    _runButton->setEnabled(true);
 
     // Auto scroll down if the amount of text is greater than the text field
-    QScrollBar *sb = outputText->verticalScrollBar();
+    QScrollBar *sb = _outputText->verticalScrollBar();
     sb->setValue(sb->maximum());
 }
 

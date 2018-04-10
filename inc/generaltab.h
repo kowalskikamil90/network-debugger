@@ -10,7 +10,7 @@ class OneOptionTab : public QWidget
 {
     Q_OBJECT
 public:
-    explicit OneOptionTab(QString option, QWidget *parent = nullptr);
+    explicit OneOptionTab(QString optionName, QWidget *parent = nullptr);
     bool isOptionSet();
 
 signals:
@@ -18,9 +18,9 @@ signals:
 public slots:
 
 private:
-    QCheckBox *option;
-    QVBoxLayout *mainLayout;
-    QHBoxLayout *hLayout;
+    QCheckBox *_option;
+    QVBoxLayout *_mainLayout;
+    QHBoxLayout *_hLayout;
 };
 
 #endif // GENERALTAB_H

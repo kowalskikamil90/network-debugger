@@ -20,16 +20,16 @@ signals:
 public slots:
 
 private:
-    QVBoxLayout *vLayout;
-    QHBoxLayout *ipLayout;
-    QLabel *ipLabel;
-    QLabel *dotLabel1;
-    QLabel *dotLabel2;
-    QLabel *dotLabel3;
-    QLineEdit *ipEdit1;
-    QLineEdit *ipEdit2;
-    QLineEdit *ipEdit3;
-    QLineEdit *ipEdit4;
+    QVBoxLayout *_vLayout;
+    QHBoxLayout *_ipLayout;
+    QLabel *_ipLabel;
+    QLabel *_dotLabel1;
+    QLabel *_dotLabel2;
+    QLabel *_dotLabel3;
+    QLineEdit *_ipEdit1;
+    QLineEdit *_ipEdit2;
+    QLineEdit *_ipEdit3;
+    QLineEdit *_ipEdit4;
 };
 
 #endif // TRACERTTAB_H

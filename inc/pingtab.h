@@ -22,19 +22,19 @@ signals:
 public slots:
 
 private:
-    QVBoxLayout *vLayout;
-    QHBoxLayout *ipLayout;
-    QHBoxLayout *timesLayout;
-    QLabel *ipLabel;
-    QLabel *dotLabel1;
-    QLabel *dotLabel2;
-    QLabel *dotLabel3;
-    QLabel *timesLabel;
-    QLineEdit *ipEdit1;
-    QLineEdit *ipEdit2;
-    QLineEdit *ipEdit3;
-    QLineEdit *ipEdit4;
-    QSpinBox *timesEdit;
+    QVBoxLayout *_vLayout;
+    QHBoxLayout *_ipLayout;
+    QHBoxLayout *_timesLayout;
+    QLabel *_ipLabel;
+    QLabel *_dotLabel1;
+    QLabel *_dotLabel2;
+    QLabel *_dotLabel3;
+    QLabel *_timesLabel;
+    QLineEdit *_ipEdit1;
+    QLineEdit *_ipEdit2;
+    QLineEdit *_ipEdit3;
+    QLineEdit *_ipEdit4;
+    QSpinBox *_timesEdit;
 };
 
 #endif // PINGTAB_H

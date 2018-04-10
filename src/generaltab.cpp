@@ -2,21 +2,21 @@
 
 OneOptionTab::OneOptionTab(QString optionName, QWidget *parent) :
     QWidget(parent),
-    option(new QCheckBox),
-    mainLayout(new QVBoxLayout),
-    hLayout(new QHBoxLayout )
+    _option(new QCheckBox),
+    _mainLayout(new QVBoxLayout),
+    _hLayout(new QHBoxLayout )
 {
-    option->setText(optionName);
-    hLayout->addWidget(option);
-    hLayout->addStretch(1);
+    _option->setText(optionName);
+    _hLayout->addWidget(_option);
+    _hLayout->addStretch(1);
 
-    mainLayout->addLayout(hLayout);
-    mainLayout->addStretch(1);
+    _mainLayout->addLayout(_hLayout);
+    _mainLayout->addStretch(1);
 
-    setLayout(mainLayout);
+    setLayout(_mainLayout);
 }
 
 bool OneOptionTab::isOptionSet()
 {
-    return option->isChecked();
+    return _option->isChecked();
 }
