@@ -82,21 +82,23 @@ PingTab::PingTab(QWidget *parent) :
     setLayout(vLayout);
 }
 
-int PingTab::getTimes()
+QString PingTab::getCount()
 {
     // Data validation is done by the widget itself
-    return timesEdit->text().toInt();
+    return timesEdit->text();
 }
 
-QVector<int> PingTab::getIp()
+QString PingTab::getIp()
 {
-    QVector<int> ipOctets;
-
     // Data validation is done by the widget itself
-    ipOctets.push_back(ipEdit1->text().toInt());
-    ipOctets.push_back(ipEdit2->text().toInt());
-    ipOctets.push_back(ipEdit3->text().toInt());
-    ipOctets.push_back(ipEdit4->text().toInt());
+    QString ipAddress;
+    ipAddress.append(ipEdit1->text());
+    ipAddress.append(".");
+    ipAddress.append(ipEdit2->text());
+    ipAddress.append(".");
+    ipAddress.append(ipEdit3->text());
+    ipAddress.append(".");
+    ipAddress.append(ipEdit4->text());
 
-    return ipOctets;
+    return ipAddress;
 }

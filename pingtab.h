@@ -8,14 +8,15 @@
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QVector>
+#include <QString>
 
 class PingTab : public QWidget
 {
     Q_OBJECT
 public:
     explicit PingTab(QWidget *parent = nullptr);
-    int getTimes();
-    QVector<int> getIp();
+    QString getCount();
+    QString getIp();
 
 signals:
 

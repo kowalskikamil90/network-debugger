@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QProcess>
 
 class MainWindow : public QDialog
 {
@@ -17,12 +18,14 @@ public:
 
 private slots:
     void runCommand();
+    void updateOutput(int, QProcess::ExitStatus);
 
 private:
     QTabWidget *tabs;
     QVBoxLayout *layout;
     QTextEdit *outputText;
     QPushButton *runButton;
+    QProcess *commandRunner;
 };
 
 #endif // MAINWINDOW_H
