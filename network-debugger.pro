@@ -27,9 +27,11 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     pingtab.cpp \
-    tracerttab.cpp
+    tracerttab.cpp \
+    generaltab.cpp
 
 HEADERS += \
         mainwindow.h \
     pingtab.h \
-    tracerttab.h
+    tracerttab.h \
+    generaltab.h

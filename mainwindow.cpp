@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "pingtab.h"
 #include "tracerttab.h"
+#include "generaltab.h"
 #include <QStringList>
 #include <QScrollBar>
 
@@ -18,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Add TABs with commands
     tabs->addTab(new PingTab(tabs), "ping");
     tabs->addTab(new TracertTab(tabs), "traceroute");
+    tabs->addTab(new GeneralTab("'Show all' option", tabs), "arp");
+    tabs->addTab(new GeneralTab( "'Show all' option", tabs), "ifconfig");
 
     // Setup buttons and text field geometry
     outputText->setBaseSize(150, 400);
@@ -42,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     setLayout(layout);
 
     // Set the initial poistion and size of the main window
-    this->setGeometry(300, 130, 400, 500);
+    this->setGeometry(300, 130, 500, 500);
 
     /* Mechanics of the  application */
 
@@ -83,6 +86,8 @@ void MainWindow::runCommand()
 
     PingTab *pingTab = nullptr;
     TracertTab *tracertTab = nullptr;
+    GeneralTab *arpTab = nullptr;
+    GeneralTab *ifconfigTab = nullptr;
 
     QString program;
     QStringList arguments;
@@ -116,6 +121,34 @@ void MainWindow::runCommand()
 
         break;
 
+    case 2: // ARP command tab, check if 'all' option is set
+
+        // Fetch data from the arp tab
+        arpTab = reinterpret_cast<GeneralTab *>(currentTab);
+
+        if (arpTab->isOptionSet())
+        {
+            arguments << "-a";
+        }
+
+        program = "arp";
+
+        break;
+
+    case 3: // IFCONFIG command tab, check if 'all' option is set
+
+        // Fetch data from the ifconfig tab
+        ifconfigTab = reinterpret_cast<GeneralTab *>(currentTab);
+
+        if (ifconfigTab->isOptionSet())
+        {
+            arguments << "-a";
+        }
+
+        program = "ifconfig";
+
+        break;
+
     }
 
     // Run the command
@@ -140,9 +173,6 @@ void MainWindow::updateOutput(int exitCode, QProcess::ExitStatus exitStatus)
 
 void MainWindow::updateOutputRealTime()
 {
-    // Activate the button again
-    runButton->setEnabled(true);
-
     outputText->setText(outputText->toPlainText() + commandRunner->readAllStandardOutput());
 
     // Auto scroll down if the amount of text is greater than the text field
@@ -163,6 +193,10 @@ void MainWindow::handleError(QProcess::ProcessError error)
 
         outputText->append("ERROR. Failed to start the process\n");
         outputText->append("\n------------------------------------------------------------------\n\n");
+
+        // Activate the button again. Need to be done here since in this case
+        // handler related to "process finished" event will not be triggered.
+        runButton->setEnabled(true);
 
         break;
 
