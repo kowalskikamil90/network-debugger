@@ -30,6 +30,7 @@ private:
     QTextEdit *outputText;
     QPushButton *runButton;
     QPushButton *clearButton;
+    QPushButton *terminateButton;
     QProcess *commandRunner;
 };
 

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "pingtab.h"
 #include <QStringList>
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent),
@@ -10,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
       outputText(new QTextEdit(this)),
       runButton(new QPushButton(this)),
       clearButton(new QPushButton(this)),
+      terminateButton(new QPushButton(this)),
       commandRunner(new QProcess(this))
 {
     tabs->addTab(new PingTab(tabs), "ping");
@@ -18,9 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     runButton->setFixedWidth(140);
     clearButton->setText("CLEAR");
     clearButton->setFixedWidth(140);
+    terminateButton->setText("TERMINATE");
+    terminateButton->setFixedWidth(140);
 
     /* Horizontal layout for buttons*/
     btnsLayout->addWidget(runButton);
+    btnsLayout->addWidget(terminateButton);
     btnsLayout->addWidget(clearButton);
 
     /* Main vertical layout */
@@ -38,6 +43,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Execute command when the "RUN" button is clicked
     connect(runButton, SIGNAL (clicked()), this, SLOT (runCommand()));
+
+    // Terminate the process when "TERMINATE" button is clicked
+    connect(terminateButton, SIGNAL (clicked()), commandRunner, SLOT (terminate()));
 
     // Clear the output text field when "CLEAR" button is clicked
     connect(clearButton, SIGNAL (clicked()), this, SLOT (clear()));
@@ -101,6 +109,10 @@ void MainWindow::updateOutput(int exitCode, QProcess::ExitStatus exitStatus)
     QString delimiter("\n------------------------------------------------------------------\n\n");
 
     outputText->setText(outputText->toPlainText() + delimiter);
+
+    // Auto scroll down if the amount of text is greater than the text field
+    QScrollBar *sb = outputText->verticalScrollBar();
+    sb->setValue(sb->maximum());
 }
 
 void MainWindow::updateOutputRealTime()
@@ -109,6 +121,10 @@ void MainWindow::updateOutputRealTime()
     runButton->setEnabled(true);
 
     outputText->setText(outputText->toPlainText() + commandRunner->readAllStandardOutput());
+
+    // Auto scroll down if the amount of text is greater than the text field
+    QScrollBar *sb = outputText->verticalScrollBar();
+    sb->setValue(sb->maximum());
 }
 
 void MainWindow::clear()
