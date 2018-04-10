@@ -26,8 +26,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    pingtab.cpp
+    pingtab.cpp \
+    tracerttab.cpp
 
 HEADERS += \
         mainwindow.h \
-    pingtab.h
+    pingtab.h \
+    tracerttab.h

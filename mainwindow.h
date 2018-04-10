@@ -22,6 +22,7 @@ private slots:
     void clear();
     void updateOutput(int, QProcess::ExitStatus);
     void updateOutputRealTime();
+    void handleError(QProcess::ProcessError);
 
 private:
     QTabWidget *tabs;

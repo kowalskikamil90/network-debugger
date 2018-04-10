@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "pingtab.h"
+#include "tracerttab.h"
 #include <QStringList>
 #include <QScrollBar>
 
@@ -14,7 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
       terminateButton(new QPushButton(this)),
       commandRunner(new QProcess(this))
 {
+    // Add TABs with commands
     tabs->addTab(new PingTab(tabs), "ping");
+    tabs->addTab(new TracertTab(tabs), "traceroute");
+
+    // Setup buttons and text field geometry
     outputText->setBaseSize(150, 400);
     runButton->setText("RUN");
     runButton->setFixedWidth(140);
@@ -56,6 +61,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Add delimiter to the output text field when the command has been executed
     connect(commandRunner, SIGNAL (finished(int, QProcess::ExitStatus)), this, SLOT (updateOutput(int, QProcess::ExitStatus)));
 
+    // Handle QProcess error (e.g no such command in the system)
+    connect(commandRunner, SIGNAL (errorOccurred(QProcess::ProcessError)), this, SLOT (handleError(QProcess::ProcessError)));
+
 }
 
 MainWindow::~MainWindow()
@@ -74,9 +82,12 @@ void MainWindow::runCommand()
     int currentTabIndex = tabs->currentIndex();
 
     PingTab *pingTab = nullptr;
+    TracertTab *tracertTab = nullptr;
 
     QString program;
     QStringList arguments;
+    QString ip;
+    QString count;
 
     // Cast QWidget* to a correct tab class
     switch (currentTabIndex){
@@ -85,17 +96,30 @@ void MainWindow::runCommand()
 
         // Fetch data from the ping tab
         pingTab = reinterpret_cast<PingTab *>(currentTab);
-        QString count = pingTab->getCount();
-        QString ip = pingTab->getIp();
+        count = pingTab->getCount();
+        ip = pingTab->getIp();
 
         program = "ping";
         arguments << ip;
         arguments << "-c" << count;
 
-        commandRunner->start(program, arguments);
+        break;
+
+    case 1: // TRACEROUTE command tab, get IP address
+
+        // Fetch data from the ping tab
+        tracertTab = reinterpret_cast<TracertTab *>(currentTab);
+        ip = tracertTab->getIp();
+
+        program = "traceroute";
+        arguments << ip;
 
         break;
+
     }
+
+    // Run the command
+    commandRunner->start(program, arguments);
 }
 
 void MainWindow::updateOutput(int exitCode, QProcess::ExitStatus exitStatus)
@@ -107,8 +131,7 @@ void MainWindow::updateOutput(int exitCode, QProcess::ExitStatus exitStatus)
     runButton->setEnabled(true);
 
     QString delimiter("\n------------------------------------------------------------------\n\n");
-
-    outputText->setText(outputText->toPlainText() + delimiter);
+    outputText->append(delimiter);
 
     // Auto scroll down if the amount of text is greater than the text field
     QScrollBar *sb = outputText->verticalScrollBar();
@@ -130,6 +153,51 @@ void MainWindow::updateOutputRealTime()
 void MainWindow::clear()
 {
     outputText->clear();
+}
+
+void MainWindow::handleError(QProcess::ProcessError error)
+{
+
+    switch (error) {
+    case QProcess::FailedToStart:
+
+        outputText->append("ERROR. Failed to start the process\n");
+        outputText->append("\n------------------------------------------------------------------\n\n");
+
+        break;
+
+    case QProcess::Crashed:
+
+        outputText->append("ERROR. Process terminated\n");
+        break;
+
+    case QProcess::Timedout:
+
+        outputText->append("ERROR. Timeout occured\n");
+        break;
+
+    case QProcess::WriteError:
+
+        outputText->append("ERROR. WriteError occured\n");
+        break;
+
+    case QProcess::ReadError:
+
+        outputText->append("ERROR. ReadError occured\n");
+        break;
+
+    case QProcess::UnknownError:
+
+        outputText->append("ERROR. UnknownError occured\n");
+        break;
+    }
+
+    // Activate the button again
+    runButton->setEnabled(true);
+
+    // Auto scroll down if the amount of text is greater than the text field
+    QScrollBar *sb = outputText->verticalScrollBar();
+    sb->setValue(sb->maximum());
 }
 
 

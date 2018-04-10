@@ -1,21 +1,18 @@
-#include "pingtab.h"
-#include <QDebug>
+#include "tracerttab.h"
+#include <QIntValidator>
 
-PingTab::PingTab(QWidget *parent) :
-    QWidget(parent),
-    vLayout(new QVBoxLayout(this)),
-    ipLayout(new QHBoxLayout(this)),
-    timesLayout(new QHBoxLayout(this)),
-    ipLabel(new QLabel(this)),
-    dotLabel1(new QLabel(this)),
-    dotLabel2(new QLabel(this)),
-    dotLabel3(new QLabel(this)),
-    timesLabel(new QLabel(this)),
-    ipEdit1(new QLineEdit(this)),
-    ipEdit2(new QLineEdit(this)),
-    ipEdit3(new QLineEdit(this)),
-    ipEdit4(new QLineEdit(this)),
-    timesEdit(new QSpinBox(this))
+TracertTab::TracertTab(QWidget *parent) :
+  QWidget(parent),
+  vLayout(new QVBoxLayout(this)),
+  ipLayout(new QHBoxLayout(this)),
+  ipLabel(new QLabel(this)),
+  dotLabel1(new QLabel(this)),
+  dotLabel2(new QLabel(this)),
+  dotLabel3(new QLabel(this)),
+  ipEdit1(new QLineEdit(this)),
+  ipEdit2(new QLineEdit(this)),
+  ipEdit3(new QLineEdit(this)),
+  ipEdit4(new QLineEdit(this))
 {
     /* IP address - horizontal layout */
 
@@ -62,34 +59,15 @@ PingTab::PingTab(QWidget *parent) :
     ipLayout->addWidget(ipEdit4);
     ipLayout->addStretch(1);
 
-    /* Numbr of packets - horizontal layout */
-
-    timesLabel->setText("How many packets to send?");
-    timesEdit->setFixedWidth(45);
-    timesEdit->setAlignment(Qt::AlignRight);
-
-    // Limit the number of packets from 1 to 100
-    timesEdit->setRange(1, 100);
-    timesLayout->addWidget(timesLabel);
-    timesLayout->addWidget(timesEdit);
-    timesLayout->addStretch(1);
-
     /* Main layout for this tab */
 
     vLayout->addWidget(ipLabel);
     vLayout->addLayout(ipLayout);
-    vLayout->addLayout(timesLayout);
     vLayout->addStretch(1);
     setLayout(vLayout);
 }
 
-QString PingTab::getCount()
-{
-    // Data validation is done by the widget itself
-    return timesEdit->text();
-}
-
-QString PingTab::getIp()
+QString TracertTab::getIp()
 {
     // Data validation is done by the widget itself
     QString ipAddress;

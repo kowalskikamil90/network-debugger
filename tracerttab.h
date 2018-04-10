@@ -1,20 +1,18 @@
-#ifndef PINGTAB_H
-#define PINGTAB_H
+#ifndef TRACERTTAB_H
+#define TRACERTTAB_H
 
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
-#include <QSpinBox>
 #include <QString>
 
-class PingTab : public QWidget
+class TracertTab : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PingTab(QWidget *parent = nullptr);
-    QString getCount();
+    explicit TracertTab(QWidget *parent = nullptr);
     QString getIp();
 
 signals:
@@ -24,17 +22,14 @@ public slots:
 private:
     QVBoxLayout *vLayout;
     QHBoxLayout *ipLayout;
-    QHBoxLayout *timesLayout;
     QLabel *ipLabel;
     QLabel *dotLabel1;
     QLabel *dotLabel2;
     QLabel *dotLabel3;
-    QLabel *timesLabel;
     QLineEdit *ipEdit1;
     QLineEdit *ipEdit2;
     QLineEdit *ipEdit3;
     QLineEdit *ipEdit4;
-    QSpinBox *timesEdit;
 };
 
-#endif // PINGTAB_H
+#endif // TRACERTTAB_H
