@@ -15,7 +15,7 @@ class PingTab : public QWidget
 public:
     explicit PingTab(QWidget *parent = nullptr);
     int getTimes();
-    QVector<int>& getIp(QVector<int>& ipOctets);
+    QVector<int> getIp();
 
 signals:
 

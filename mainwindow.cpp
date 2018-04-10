@@ -46,13 +46,12 @@ void MainWindow::runCommand()
     case 0: // PING command tab, get count and IP address
         pingTab = reinterpret_cast<PingTab *>(currentTab);
         int times = pingTab->getTimes();
-        QVector<int> ipOctets(4);
-        pingTab->getIp(ipOctets);
+        QVector<int> ipOctets = pingTab->getIp();
 
-        qDebug() << "0" << ipOctets[0];
-        qDebug() << "1" << ipOctets[1];
-        qDebug() << "2" << ipOctets[2];
-        qDebug() << "3" << ipOctets[3];
+        qDebug() << "0" << ipOctets.at(0);
+        qDebug() << "1" << ipOctets.at(1);
+        qDebug() << "2" << ipOctets.at(2);
+        qDebug() << "3" << ipOctets.at(3);
 
         break;
     }
