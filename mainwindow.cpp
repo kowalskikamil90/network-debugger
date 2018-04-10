@@ -19,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Add TABs with commands
     tabs->addTab(new PingTab(tabs), "ping");
     tabs->addTab(new TracertTab(tabs), "traceroute");
-    tabs->addTab(new GeneralTab("'Show all' option", tabs), "arp");
-    tabs->addTab(new GeneralTab( "'Show all' option", tabs), "ifconfig");
+    tabs->addTab(new OneOptionTab("'Show all' option", tabs), "arp");
+    tabs->addTab(new OneOptionTab( "'Show all' option", tabs), "ifconfig");
 
     // Setup buttons and text field geometry
     outputText->setBaseSize(150, 400);
@@ -86,8 +86,8 @@ void MainWindow::runCommand()
 
     PingTab *pingTab = nullptr;
     TracertTab *tracertTab = nullptr;
-    GeneralTab *arpTab = nullptr;
-    GeneralTab *ifconfigTab = nullptr;
+    OneOptionTab *arpTab = nullptr;
+    OneOptionTab *ifconfigTab = nullptr;
 
     QString program;
     QStringList arguments;
@@ -124,7 +124,7 @@ void MainWindow::runCommand()
     case 2: // ARP command tab, check if 'all' option is set
 
         // Fetch data from the arp tab
-        arpTab = reinterpret_cast<GeneralTab *>(currentTab);
+        arpTab = reinterpret_cast<OneOptionTab *>(currentTab);
 
         if (arpTab->isOptionSet())
         {
@@ -138,7 +138,7 @@ void MainWindow::runCommand()
     case 3: // IFCONFIG command tab, check if 'all' option is set
 
         // Fetch data from the ifconfig tab
-        ifconfigTab = reinterpret_cast<GeneralTab *>(currentTab);
+        ifconfigTab = reinterpret_cast<OneOptionTab *>(currentTab);
 
         if (ifconfigTab->isOptionSet())
         {

@@ -6,11 +6,11 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-class GeneralTab : public QWidget
+class OneOptionTab : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GeneralTab(QString option, QWidget *parent = nullptr);
+    explicit OneOptionTab(QString option, QWidget *parent = nullptr);
     bool isOptionSet();
 
 signals:

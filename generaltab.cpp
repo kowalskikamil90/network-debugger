@@ -1,6 +1,6 @@
 #include "generaltab.h"
 
-GeneralTab::GeneralTab(QString optionName, QWidget *parent) :
+OneOptionTab::OneOptionTab(QString optionName, QWidget *parent) :
     QWidget(parent),
     option(new QCheckBox),
     mainLayout(new QVBoxLayout),
@@ -16,7 +16,7 @@ GeneralTab::GeneralTab(QString optionName, QWidget *parent) :
     setLayout(mainLayout);
 }
 
-bool GeneralTab::isOptionSet()
+bool OneOptionTab::isOptionSet()
 {
     return option->isChecked();
 }
